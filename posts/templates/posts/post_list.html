@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content_wrapper %}
+    <div class="row mt-20 mb-20">
+        <div class="col-md-7">
+        {% for post in posts %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.titulo }}</h5>
+                    <p class="text-muted border-bottom">- Por {{ post.propietario }}</p>
+                    <div class="post-teaser">
+                        <p class="card-text">{{ post.contenido|safe }}</p>
+                    </div>
+                    <div class="button-group-area mt-40 border-top">
+                        <a href="{% url 'post-detail' post.slug %}" class="genric-btn danger circle">Ver detalle</a>
+                        {% if post.propietario.pk is request.user.pk %}
+                            <a href="{% url 'post-edit' post.slug %}" class="genric-btn danger circle">Editar</a>
+                            <a href="{% url 'post-delete' post.slug %}" class="genric-btn danger circle">Eliminar</a>
+                        {% endif %}
+                        <div class="f-right" id="like-section-{{ post.slug }}">
+                            {% include 'posts/like_section.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="col-md-5 h-2">
+            <div class="row center-v">
+                <div class="col-md-7 dialog-orange">
+                    <h5 class="mb-20">Busca lo que quieras ver</h5>
+                    <select class="combo-temas">
+                        <option>Todos los temas</option>
+                        <option>Cocina</option>
+                        <option>Plomeria</option>
+                        <option>Vehiculo</option>
+                        <option>Indumentaria</option>
+                    </select>
+                    <a href="" class="btn-combo-temas">Buscar</a>
+                </div>
+                <div class="col-md-5">
+                    <img src={% static 'imagenes/Lupa.png' %} alt="logo not found">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="/?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="/?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+ 
+{% endblock %}

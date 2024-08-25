@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static crispy_forms_tags %}
+{% block extra_statics %}
+    {{ form.media }}
+{% endblock %}
+{% block content_wrapper %}
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+{% endblock %}

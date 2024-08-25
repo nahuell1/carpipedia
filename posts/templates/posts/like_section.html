@@ -1,0 +1,19 @@
+{% load post_tags %}
+<div class="row">
+    <form action="{% url 'like_post' %}" method="post">
+        {% csrf_token %}
+        {% if post|is_liked_by_user:request.user %}
+            <button type="submit" id="like" name="slug" value="{{ post.slug }}" class="genric-btn danger-border circle"><i class="fa fa-thumbs-up"></i>  ({{ post.likes.count }})</button>
+        {% else %}
+            <button type="submit" id="like" name="slug" value="{{ post.slug }}" class="genric-btn danger circle"><i class="fa fa-thumbs-up"></i>  ({{ post.likes.count }})</button>
+        {% endif %}
+    </form>
+    <form action="{% url 'dislike_post' %}" method="post">
+        {% csrf_token %}
+        {% if post|is_disliked_by_user:request.user %}
+            <button type="submit" id="dislike" name="slug" value="{{ post.slug }}" class="genric-btn danger-border circle"><i class="fa fa-thumbs-down"></i>  ({{ post.dislikes.count }})</button>
+        {% else %}
+            <button type="submit" id="dislike" name="slug" value="{{ post.slug }}" class="genric-btn danger circle"><i class="fa fa-thumbs-down"></i>  ({{ post.dislikes.count }})</button>
+        {% endif %}
+    </form>
+</div>

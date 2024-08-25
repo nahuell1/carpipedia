@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content_wrapper %}
+  <button type="button" class="genric-btn danger radius" data-toggle="modal" data-target="#deleteAccModal">
+    Eliminar perfil
+  </button>
+  <div class="whole-wrap">
+    <div class="container box_1170">
+      <div class="section-top-border">
+        <h3 class="mb-30">{{ object.username }}</h3>
+        <div class="row">
+          <div class="col-md-3">
+            <img src="{% static "imagenes\CarpinchoPrueba.png" %}" alt="" class="img-fluid">
+          </div>
+          <div class="col-md-9 mt-sm-20">
+            <p><b>Nombres: </b>{{ object.first_name }}</p>
+            <p><b>Apellidos: </b>{{ object.last_name }}</p>
+            <p><b>Correo electrónico: </b>{{ object.email }}</p>
+            <p><b>Ubicación: </b>{{ object.ubicacion }}</p>
+            <p><b>Fecha de nacimiento: </b>{{ object.fecha_de_nacimiento }}</p>
+            <p><b>Biografía: </b>{{ object.biografia }}</p>
+            <p><b>Intereses: </b>{{ object.intereses }}</p>
+            <p><b>Ranking: </b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    {% for post in posts %}
+      <div class="card mb-2">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.titulo }}</h5>
+            <p class="text-muted border-bottom">- Por {{ post.propietario }}</p>
+            <div class="post-teaser">
+              <p class="card-text">{{ post.contenido|safe }}</p>
+            </div>
+            <div class="button-group-area mt-40 border-top">
+              <a href="{% url 'post-detail' post.slug %}" class="genric-btn danger circle">Ver detalle</a>
+              <a href="{% url 'post-edit' post.slug %}" class="genric-btn danger circle">Editar</a>
+              <a href="{% url 'post-delete' post.slug %}" class="genric-btn danger circle">Eliminar</a>
+            <div class="f-right" id="like-section-{{ post.slug }}">
+              {% include 'posts/like_section.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  <div class="modal fade" id="deleteAccModal" tabindex="-1" aria-labelledby="deleteAccModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteAccModalLabel">Eliminar Perfil</h5>
+        </div>
+        <div class="modal-body">
+          ¿Está seguro que desea eliminar su cuenta?
+          Esta acción <strong>no se puede deshacer</strong>.
+          Al hacerlo también eliminará los siguientes posts (click en el título para abrir en una nueva pestaña):
+          <div class="container">
+            <ul class="unordered-list">
+              {% for post in object.post_set.all %}
+                <li><a class="text-secondary" target="_blank" href="{% url 'post-detail' post.slug %}">{{ post.titulo }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="{% url "user-delete" %}">
+            {% csrf_token %}<input class="genric-btn danger radius" type="submit" value="Sí, estoy seguro. ELIMINAR">
+          </form>
+          <button type="button" class="genric-btn primary radius" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

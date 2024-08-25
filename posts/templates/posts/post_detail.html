@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content_wrapper %}
+  <div class="container mt-5 mb-5">
+    <div class="card w-75">
+      <div class="card-body">
+        <h2 class="">{{ post.titulo }}</h2>
+        <p class="text-muted border-bottom">- Por {{ post.propietario }}</p>
+        <div class="container">
+          <p class="card-text">{{ post.contenido|safe }}</p>
+          <div class="row pt-20 border-top">
+            <div class="col-7">
+              <div class="row">
+                <div id="like-section-{{ post.slug }}">
+                  {% include 'posts/like_section.html' %}
+                </div>
+                {% if post.propietario.pk is request.user.pk %}
+                  <a href="{% url 'post-edit' post.slug %}" class="genric-btn danger circle">Editar</a>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-5">
+              <p class="text-muted float-right">Creado el: {{ object.fecha_creacion|date:'j \d\e F \d\e Y' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
