@@ -11,6 +11,10 @@ pylint-django
 pytest-django
 pycodestyle
 django-crispy-forms
+crispy-bootstrap4
 django-tinymce
 gunicorn
 whitenoise
+requests
+PyJWT
+psycopg2-binary

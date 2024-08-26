@@ -1,10 +1,6 @@
 import os
-import sys
 import unittest
-import subprocess
-import pytest
 import pycodestyle
-from pylint.epylint import lint
 from django.conf import settings
 
 
